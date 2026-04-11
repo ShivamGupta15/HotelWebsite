@@ -58,7 +58,7 @@ const testimonials = [
     name: 'James Hartwell',
     location: 'London, UK',
     rating: 5,
-    text: 'Grand Vista sets the gold standard for luxury hospitality. From the immaculate rooms to the exceptional dining, every detail was perfection.',
+    text: 'Rama Inn sets the gold standard for luxury hospitality. From the immaculate rooms to the exceptional dining, every detail was perfection.',
     avatar: 'JH',
   },
   {
@@ -114,7 +114,7 @@ export default function Home() {
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Luxury Awaits at{' '}
-            <span className="text-gold-400 block">Grand Vista</span>
+            <span className="text-gold-400 block">Rama Inn</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -190,7 +190,7 @@ export default function Home() {
               Everything You Need for the Perfect Stay
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              Grand Vista Hotel offers an unrivaled selection of amenities designed to make your stay extraordinary.
+              Rama Inn offers an unrivaled selection of amenities designed to make your stay extraordinary.
             </p>
           </div>
 
@@ -280,7 +280,7 @@ export default function Home() {
               What Our Guests Say
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Don't just take our word for it — hear from the guests who've experienced the Grand Vista difference.
+              Don't just take our word for it — hear from the guests who've experienced the Rama Inn difference.
             </p>
           </div>
 
@@ -315,7 +315,7 @@ export default function Home() {
             Ready to Experience Luxury?
           </h2>
           <p className="text-gold-100 mb-8 text-lg">
-            Book your stay today and discover why Grand Vista Hotel is the premier destination for discerning travelers.
+            Book your stay today and discover why Rama Inn is the premier destination for discerning travelers.
           </p>
           <button
             onClick={() => navigate('/rooms')}

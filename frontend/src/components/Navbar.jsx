@@ -27,7 +27,7 @@ export default function Navbar() {
               <Hotel className="w-5 h-5 text-white" />
             </div>
             <div>
-              <div className="text-white font-bold text-lg leading-tight">Grand Vista</div>
+              <div className="text-white font-bold text-lg leading-tight">Rama Inn</div>
               <div className="text-gold-400 text-xs font-medium leading-tight tracking-wider uppercase">Hotel</div>
             </div>
           </Link>

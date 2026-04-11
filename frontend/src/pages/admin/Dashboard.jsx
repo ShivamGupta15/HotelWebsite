@@ -94,7 +94,7 @@ export default function Dashboard() {
         {/* Page Header */}
         <div className="bg-white border-b border-gray-200 px-8 py-5">
           <h1 className="text-2xl font-bold text-navy-900">Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Welcome back! Here's what's happening at Grand Vista.</p>
+          <p className="text-sm text-gray-500 mt-0.5">Welcome back! Here's what's happening at Rama Inn.</p>
         </div>
 
         <div className="p-8">

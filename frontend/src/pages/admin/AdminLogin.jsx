@@ -66,7 +66,7 @@ export default function AdminLogin() {
             <div className="w-16 h-16 bg-gold-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
               <Hotel className="w-9 h-9 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white">Grand Vista Hotel</h1>
+            <h1 className="text-2xl font-bold text-white">Rama Inn</h1>
             <p className="text-gray-400 text-sm mt-1">Admin Panel — Staff Sign In</p>
           </div>
 
@@ -140,7 +140,7 @@ export default function AdminLogin() {
         </div>
 
         <p className="text-center text-gray-500 text-sm mt-6">
-          &copy; {new Date().getFullYear()} Grand Vista Hotel. All rights reserved.
+          &copy; {new Date().getFullYear()} Rama Inn. All rights reserved.
         </p>
       </div>
     </div>

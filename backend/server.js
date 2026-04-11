@@ -171,7 +171,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Grand Vista Hotel API running on port ${PORT}`);
+  console.log(`Rama Inn API running on port ${PORT}`);
   console.log(`Admin credentials: admin@hotel.com / admin123`);
 });
 
