@@ -1,10 +1,5 @@
 # Rama Inn - Hotel Management System
 
-# MODEL HANDOVER PROTOCOL
-- If I switch from Claude to Gemini (or vice versa), the first prompt must be:
-  "Read CLAUDE.md and the last code changes. We are currently [Task Name]."
-- Always update the 'Current State' section of this file before closing a session.
-
 ## Project Overview
 Full-stack hotel booking and management application for "Rama Inn". Guest-facing booking site + admin panel for managing rooms, rates, bookings, and walk-in check-ins.
 
