@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const { pool } = require('../db/database');
 const { authenticateToken, requireAdmin } = require('../middleware/authMiddleware');
 const { createClient } = require('@supabase/supabase-js');
