@@ -34,7 +34,20 @@ export default function Rooms() {
       if (checkOut) params.check_out = checkOut;
       if (category) params.category = category;
       const res = await getRooms(params);
-      setRooms(res.data);
+      // One card per category — prefer room with a photo
+      const seen = {};
+      const byCategory = [];
+      for (const room of res.data) {
+        if (!seen[room.category]) {
+          seen[room.category] = room;
+        } else if (!seen[room.category].primary_photo && room.primary_photo) {
+          seen[room.category] = room;
+        }
+      }
+      ['standard', 'deluxe', 'family'].forEach((cat) => {
+        if (seen[cat]) byCategory.push(seen[cat]);
+      });
+      setRooms(byCategory);
     } catch (err) {
       setError('Failed to load rooms. Please try again.');
     } finally {
@@ -138,7 +151,7 @@ export default function Rooms() {
             <p className="text-gray-500 text-sm">
               {rooms.length === 0
                 ? 'No rooms found'
-                : `${rooms.length} room${rooms.length !== 1 ? 's' : ''} available`}
+                : `${rooms.length} categor${rooms.length !== 1 ? 'ies' : 'y'} available`}
               {checkIn && checkOut ? ` for ${checkIn} to ${checkOut}` : ''}
             </p>
             {(checkIn || checkOut || category) && (
