@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const { getDb } = require('../db/database');
+const { pool } = require('../db/database');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'rama-inn-hotel-secret-key-2026';
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -13,14 +13,16 @@ function authenticateToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    const db = getDb();
-    const user = db.prepare('SELECT id, name, email, role FROM users WHERE id = ?').get(decoded.userId);
+    const { rows } = await pool.query(
+      'SELECT id, name, email, role FROM users WHERE id = $1',
+      [decoded.userId]
+    );
 
-    if (!user) {
+    if (!rows[0]) {
       return res.status(401).json({ error: 'Invalid token - user not found' });
     }
 
-    req.user = user;
+    req.user = rows[0];
     next();
   } catch (err) {
     return res.status(403).json({ error: 'Invalid or expired token' });
