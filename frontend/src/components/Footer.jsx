@@ -19,7 +19,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-sm leading-relaxed text-gray-400">
-              Experience luxury at its finest. Our award-winning hotel offers world-class amenities and unmatched hospitality.
+              Experience confort at its finest. Book your stay with us and enjoy a memorable visit to Varanasi.
             </p>
             <div className="flex space-x-3 mt-4">
               <a href="#" className="w-8 h-8 bg-navy-800 rounded-full flex items-center justify-center hover:bg-gold-500 transition-colors">
@@ -81,20 +81,20 @@ export default function Footer() {
               <li className="flex items-start space-x-2">
                 <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-gray-400">
-                  123 Luxury Avenue<br />
-                  Beverly Hills, CA 90210
+                  Vijay Nagar<br />
+                  Cantt, Varanasi
                 </span>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
                 <a href="tel:+18001234567" className="text-sm text-gray-400 hover:text-gold-400 transition-colors">
-                  +1 (800) 123-4567
+                  0542-4019409
                 </a>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
                 <a href="mailto:info@grandvista.com" className="text-sm text-gray-400 hover:text-gold-400 transition-colors">
-                  info@grandvista.com
+                  ramainn2201@gmail.com
                 </a>
               </li>
             </ul>
