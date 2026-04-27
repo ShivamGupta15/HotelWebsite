@@ -1,26 +1,20 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const { pool } = require('../db/database');
 const { authenticateToken, requireAdmin } = require('../middleware/authMiddleware');
+const { createClient } = require('@supabase/supabase-js');
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadsDir = path.join(__dirname, '..', 'uploads');
-    if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, 'room-' + uniqueSuffix + path.extname(file.originalname));
-  },
-});
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+const BUCKET = 'room-photos';
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /jpeg|jpg|png|gif|webp/;
@@ -181,10 +175,11 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
     }
 
     const photos = (await pool.query('SELECT filename FROM room_photos WHERE room_id = $1', [req.params.id])).rows;
-    for (const photo of photos) {
-      const filePath = path.join(__dirname, '..', 'uploads', photo.filename);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    }
+    const storagePaths = photos
+      .filter(p => p.filename && p.filename.includes(BUCKET))
+      .map(p => p.filename.split(`${BUCKET}/`)[1])
+      .filter(Boolean);
+    if (storagePaths.length > 0) await supabase.storage.from(BUCKET).remove(storagePaths);
 
     await pool.query('DELETE FROM rooms WHERE id = $1', [req.params.id]);
     res.json({ message: 'Room deleted successfully' });
@@ -214,12 +209,24 @@ router.post('/:id/photos', authenticateToken, requireAdmin, upload.single('photo
     const room = (await pool.query('SELECT id FROM rooms WHERE id = $1', [req.params.id])).rows[0];
     if (!room) return res.status(404).json({ error: 'Room not found' });
 
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const storagePath = `room-${req.params.id}/room-${uniqueSuffix}${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from(BUCKET)
+      .upload(storagePath, req.file.buffer, { contentType: req.file.mimetype });
+
+    if (uploadError) return res.status(500).json({ error: uploadError.message });
+
+    const { data: { publicUrl } } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
+
     const countResult = (await pool.query('SELECT COUNT(*) as count FROM room_photos WHERE room_id = $1', [req.params.id])).rows[0];
     const isPrimary = parseInt(countResult.count) === 0 ? 1 : 0;
 
     const { rows } = await pool.query(
       'INSERT INTO room_photos (room_id, filename, is_primary) VALUES ($1, $2, $3) RETURNING *',
-      [req.params.id, req.file.filename, isPrimary]
+      [req.params.id, publicUrl, isPrimary]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -233,8 +240,10 @@ router.delete('/photos/:id', authenticateToken, requireAdmin, async (req, res) =
     const photo = (await pool.query('SELECT * FROM room_photos WHERE id = $1', [req.params.id])).rows[0];
     if (!photo) return res.status(404).json({ error: 'Photo not found' });
 
-    const filePath = path.join(__dirname, '..', 'uploads', photo.filename);
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    if (photo.filename && photo.filename.includes(BUCKET)) {
+      const storagePath = photo.filename.split(`${BUCKET}/`)[1];
+      if (storagePath) await supabase.storage.from(BUCKET).remove([storagePath]);
+    }
 
     await pool.query('DELETE FROM room_photos WHERE id = $1', [req.params.id]);
 
