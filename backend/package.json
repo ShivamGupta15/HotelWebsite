@@ -1,4 +1,7 @@
 {
+  "engines": {
+  "node": "20.x"
+}
   "name": "hotel-backend",
   "version": "1.0.0",
   "description": "Rama Inn Backend API",
