@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Wifi, Tv, Wind, Coffee, ArrowRight, ImageOff } from 'lucide-react';
-import { UPLOADS_BASE } from '../services/api';
+import { getPhotoUrl } from '../services/api';
 
 const categoryColors = {
   standard: 'bg-blue-100 text-blue-800',
@@ -39,7 +39,7 @@ export default function RoomCard({ room, checkIn, checkOut }) {
       <div className="relative h-52 bg-gradient-to-br from-navy-100 to-navy-200 overflow-hidden">
         {room.primary_photo ? (
           <img
-            src={`${UPLOADS_BASE}/${room.primary_photo}`}
+            src={getPhotoUrl(room.primary_photo)}
             alt={`Room ${room.room_number}`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />

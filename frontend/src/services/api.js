@@ -11,6 +11,9 @@ const api = axios.create({
 
 export const UPLOADS_BASE = `${API_BASE}/uploads`;
 
+export const getPhotoUrl = (filename) =>
+  filename?.startsWith('http') ? filename : filename ? `${UPLOADS_BASE}/${filename}` : null;
+
 // Request interceptor to attach JWT
 api.interceptors.request.use(
   (config) => {
