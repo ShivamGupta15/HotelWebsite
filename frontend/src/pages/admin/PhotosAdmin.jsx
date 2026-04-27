@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Trash2, Star, Loader, AlertCircle, ImageOff, X } from 'lucide-react';
 import AdminSidebar from '../../components/AdminSidebar';
-import { getRooms, getRoomPhotos, uploadPhoto, deletePhoto, setPrimaryPhoto } from '../../services/api';
+import { getRooms, getRoomPhotos, uploadPhoto, deletePhoto, setPrimaryPhoto, UPLOADS_BASE } from '../../services/api';
 
 export default function PhotosAdmin() {
   const [rooms, setRooms] = useState([]);
@@ -218,7 +218,7 @@ export default function PhotosAdmin() {
                 <div key={photo.id} className="group relative bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
                   <div className="relative aspect-square">
                     <img
-                      src={`/uploads/${photo.filename}`}
+                      src={`${UPLOADS_BASE}/${photo.filename}`}
                       alt="Room photo"
                       className="w-full h-full object-cover"
                     />

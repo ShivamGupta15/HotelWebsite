@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { getBaseRates, getRooms } from '../services/api';
+import { getBaseRates, getRooms, UPLOADS_BASE } from '../services/api';
 
 const features = [
   { icon: Wifi, title: 'Free WiFi', desc: 'Complimentary high-speed internet throughout the property' },
@@ -240,7 +240,7 @@ export default function Home() {
                     {photo ? (
                       <>
                         <img
-                          src={`/uploads/${photo}`}
+                          src={`${UPLOADS_BASE}/${photo}`}
                           alt={meta.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

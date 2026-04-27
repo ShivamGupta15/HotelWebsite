@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { getRoom, checkAvailability, createBooking } from '../services/api';
+import { getRoom, checkAvailability, createBooking, UPLOADS_BASE } from '../services/api';
 
 const categoryColors = {
   standard: 'bg-blue-100 text-blue-800',
@@ -219,7 +219,7 @@ export default function RoomDetail() {
               <div className="relative h-72 sm:h-96 bg-gradient-to-br from-navy-100 to-navy-200">
                 {room.photos && room.photos.length > 0 ? (
                   <img
-                    src={`/uploads/${room.photos[activePhoto]?.filename}`}
+                    src={`${UPLOADS_BASE}/${room.photos[activePhoto]?.filename}`}
                     alt={`Room ${room.room_number}`}
                     className="w-full h-full object-cover"
                   />
@@ -264,7 +264,7 @@ export default function RoomDetail() {
                       }`}
                     >
                       <img
-                        src={`/uploads/${photo.filename}`}
+                        src={`${UPLOADS_BASE}/${photo.filename}`}
                         alt={`Thumbnail ${idx + 1}`}
                         className="w-full h-full object-cover"
                       />
