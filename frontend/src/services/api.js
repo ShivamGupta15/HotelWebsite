@@ -1,12 +1,15 @@
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'https://ramainn.onrender.com';
+
 const api = axios.create({
-  
-  baseURL: 'https://ramainn.onrender.com/' ,
+  baseURL: `${API_BASE}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+export const UPLOADS_BASE = `${API_BASE}/uploads`;
 
 // Request interceptor to attach JWT
 api.interceptors.request.use(

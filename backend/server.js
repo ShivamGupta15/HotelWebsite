@@ -17,7 +17,7 @@ initializeDatabase();
 
 // Middleware
 app.use(cors({
-  origin: ['https://hotelwebsite-6mba.onrender.com'],
+  origin: ['http://localhost:5173','https://hotelwebsite-6mba.onrender.com'],
   credentials: true,
 }));
 app.use(express.json());
