@@ -289,7 +289,7 @@ export default function RoomDetail() {
                   <div className="text-3xl font-bold text-navy-900">₹{room.base_price}</div>
                   <div className="text-sm text-gray-400">per night</div>
                   {room.base_weekend_price > room.base_price && (
-                    <div className="text-xs text-gray-400">Weekend: ${room.base_weekend_price}</div>
+                    <div className="text-xs text-gray-400">Weekend: ₹{room.base_weekend_price}</div>
                   )}
                 </div>
               </div>
@@ -342,7 +342,7 @@ export default function RoomDetail() {
                   >
                     <div className="text-gray-500 mb-1">{day.label}</div>
                     <div className={`font-bold ${day.isOverride ? 'text-gold-700' : 'text-navy-900'}`}>
-                      ${day.price}
+                      ₹{day.price}
                     </div>
                     {day.isOverride && (
                       <div className="text-gold-600 text-xs mt-0.5">Special</div>

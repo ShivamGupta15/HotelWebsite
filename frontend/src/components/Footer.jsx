@@ -14,7 +14,7 @@ export default function Footer() {
                 <Hotel className="w-5 h-5 text-white" />
               </div>
               <div>
-                <div className="text-white font-bold text-lg leading-tight">Grand Vista</div>
+                <div className="text-white font-bold text-lg leading-tight">Rama Inn</div>
                 <div className="text-gold-400 text-xs font-medium leading-tight tracking-wider uppercase">Hotel</div>
               </div>
             </Link>
@@ -103,7 +103,7 @@ export default function Footer() {
 
         <div className="border-t border-navy-800 mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between">
           <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} Grand Vista Hotel. All rights reserved.
+            &copy; {new Date().getFullYear()} Rama Inn. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-3 sm:mt-0">
             <a href="#" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">Privacy Policy</a>

@@ -1,50 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Wifi, UtensilsCrossed, Waves, Sparkles, ChevronRight,
-  Star, ArrowRight, Calendar, Shield, Clock
+  Wifi, ChevronRight, Star, ArrowRight, Calendar, Clock, ArrowUpDown, ImageOff
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { getBaseRates, getRooms } from '../services/api';
 
 const features = [
-  { icon: Wifi, title: 'High-Speed WiFi', desc: 'Complimentary gigabit internet throughout the property' },
-  { icon: Waves, title: 'Infinity Pool', desc: 'Heated outdoor pool with stunning panoramic city views' },
-  { icon: Sparkles, title: 'Luxury Spa', desc: 'Full-service spa with rejuvenating treatments and therapies' },
-  { icon: UtensilsCrossed, title: 'Fine Dining', desc: 'Award-winning restaurant serving global cuisine' },
-  { icon: Shield, title: '24/7 Security', desc: 'Round-the-clock concierge and security services' },
+  { icon: Wifi, title: 'Free WiFi', desc: 'Complimentary high-speed internet throughout the property' },
   { icon: Clock, title: 'Flexible Check-in', desc: 'Express check-in and late checkout options available' },
+  { icon: ArrowUpDown, title: 'Lift', desc: 'Convenient elevator access to all floors' },
 ];
 
-const roomCategories = [
-  {
-    category: 'standard',
+const categoryMeta = {
+  standard: {
     title: 'Standard Rooms',
     desc: 'Comfortable and elegantly appointed rooms with all modern amenities for a relaxing stay.',
-    price: 89,
-    features: ['Queen or King Bed', 'City or Garden View', 'Work Desk', '42" Smart TV'],
-    gradient: 'from-blue-600 to-blue-800',
     badge: 'bg-blue-100 text-blue-800',
+    gradient: 'from-blue-600 to-blue-800',
   },
-  {
-    category: 'deluxe',
+  deluxe: {
     title: 'Deluxe Rooms',
     desc: 'Spacious rooms with premium furnishings, upgraded amenities, and spectacular panoramic views.',
-    price: 149,
-    features: ['King Bed', 'Panoramic View', 'Sitting Area', 'Premium Minibar'],
-    gradient: 'from-purple-600 to-purple-800',
     badge: 'bg-purple-100 text-purple-800',
+    gradient: 'from-purple-600 to-purple-800',
   },
-  {
-    category: 'family',
+  family: {
     title: 'Family Suites',
     desc: 'Generous multi-room suites with separate living areas, perfect for families seeking luxury.',
-    price: 199,
-    features: ['Multiple Bedrooms', 'Full Kitchen', 'Living Room', 'Kids Amenities'],
-    gradient: 'from-emerald-600 to-emerald-800',
     badge: 'bg-emerald-100 text-emerald-800',
+    gradient: 'from-emerald-600 to-emerald-800',
   },
-];
+};
 
 const testimonials = [
   {
@@ -58,7 +46,7 @@ const testimonials = [
     name: 'James Hartwell',
     location: 'London, UK',
     rating: 5,
-    text: 'Grand Vista sets the gold standard for luxury hospitality. From the immaculate rooms to the exceptional dining, every detail was perfection.',
+    text: 'Rama Inn sets the gold standard for luxury hospitality. From the immaculate rooms to the exceptional dining, every detail was perfection.',
     avatar: 'JH',
   },
   {
@@ -74,8 +62,28 @@ export default function Home() {
   const navigate = useNavigate();
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  const [baseRates, setBaseRates] = useState({});
+  const [categoryPhotos, setCategoryPhotos] = useState({});
 
   const today = new Date().toISOString().split('T')[0];
+
+  useEffect(() => {
+    getBaseRates().then((res) => {
+      const map = {};
+      res.data.forEach((r) => { map[r.category] = r; });
+      setBaseRates(map);
+    }).catch(() => {});
+
+    getRooms().then((res) => {
+      const photos = {};
+      res.data.forEach((room) => {
+        if (room.primary_photo && !photos[room.category]) {
+          photos[room.category] = room.primary_photo;
+        }
+      });
+      setCategoryPhotos(photos);
+    }).catch(() => {});
+  }, []);
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -107,14 +115,9 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-gold-500/20 border border-gold-500/30 text-gold-300 text-sm px-4 py-2 rounded-full mb-8">
-            <Star className="w-4 h-4 fill-gold-400 text-gold-400" />
-            <span>5-Star Luxury Hotel & Spa</span>
-          </div>
-
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Luxury Awaits at{' '}
-            <span className="text-gold-400 block">Grand Vista</span>
+            <span className="text-gold-400 block">Rama Inn</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -190,7 +193,7 @@ export default function Home() {
               Everything You Need for the Perfect Stay
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              Grand Vista Hotel offers an unrivaled selection of amenities designed to make your stay extraordinary.
+              Rama Inn offers an unrivaled selection of amenities designed to make your stay extraordinary.
             </p>
           </div>
 
@@ -227,44 +230,53 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {roomCategories.map((cat) => (
-              <div key={cat.category} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
-                <div className={`h-44 bg-gradient-to-br ${cat.gradient} flex items-center justify-center relative overflow-hidden`}>
-                  <div className="absolute inset-0 opacity-10"
-                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\'/%3E%3C/g%3E%3C/svg%3E")'}}
-                  />
-                  <div className="text-center text-white relative z-10">
-                    <div className="text-4xl font-bold mb-1">₹{cat.price}</div>
-                    <div className="text-sm opacity-80">per night from</div>
+            {['standard', 'deluxe', 'family'].map((category) => {
+              const meta = categoryMeta[category];
+              const rate = baseRates[category];
+              const photo = categoryPhotos[category];
+              return (
+                <div key={category} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
+                  <div className={`h-44 bg-gradient-to-br ${meta.gradient} relative overflow-hidden`}>
+                    {photo ? (
+                      <>
+                        <img
+                          src={`/uploads/${photo}`}
+                          alt={meta.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/40" />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <ImageOff className="w-10 h-10 text-white/40" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center text-white relative z-10">
+                        <div className="text-4xl font-bold mb-1">₹{rate?.price || '—'}</div>
+                        <div className="text-sm opacity-80">per night from</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold mb-3 ${meta.badge}`}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </span>
+                    <h3 className="font-bold text-navy-900 text-xl mb-2">{meta.title}</h3>
+                    <p className="text-gray-500 text-sm mb-4 leading-relaxed">{meta.desc}</p>
+
+                    <button
+                      onClick={() => navigate(`/rooms?category=${category}`)}
+                      className="w-full flex items-center justify-center gap-2 border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white font-semibold py-2.5 rounded-xl transition-all duration-200"
+                    >
+                      View Rooms
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-
-                <div className="p-6">
-                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold mb-3 ${cat.badge}`}>
-                    {cat.category.charAt(0).toUpperCase() + cat.category.slice(1)}
-                  </span>
-                  <h3 className="font-bold text-navy-900 text-xl mb-2">{cat.title}</h3>
-                  <p className="text-gray-500 text-sm mb-4 leading-relaxed">{cat.desc}</p>
-
-                  <ul className="space-y-1.5 mb-5">
-                    {cat.features.map((f, i) => (
-                      <li key={i} className="flex items-center text-sm text-gray-600">
-                        <div className="w-1.5 h-1.5 bg-gold-500 rounded-full mr-2 flex-shrink-0"></div>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    onClick={() => navigate(`/rooms?category=${cat.category}`)}
-                    className="w-full flex items-center justify-center gap-2 border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white font-semibold py-2.5 rounded-xl transition-all duration-200"
-                  >
-                    View Rooms
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -280,7 +292,7 @@ export default function Home() {
               What Our Guests Say
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              Don't just take our word for it — hear from the guests who've experienced the Grand Vista difference.
+              Don't just take our word for it — hear from the guests who've experienced the Rama Inn difference.
             </p>
           </div>
 
@@ -315,7 +327,7 @@ export default function Home() {
             Ready to Experience Luxury?
           </h2>
           <p className="text-gold-100 mb-8 text-lg">
-            Book your stay today and discover why Grand Vista Hotel is the premier destination for discerning travelers.
+            Book your stay today and discover why Rama Inn is the premier destination for discerning travelers.
           </p>
           <button
             onClick={() => navigate('/rooms')}

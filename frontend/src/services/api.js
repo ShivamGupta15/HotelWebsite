@@ -110,4 +110,19 @@ export const bulkUpdateAdminRates = (data) =>
 
 export const deleteAdminRate = (id) => api.delete(`/admin/rates/${id}`);
 
+export const getBookingLogs = (params = {}) =>
+  api.get('/admin/booking-logs', { params });
+
+export const clearBookingLogs = () =>
+  api.delete('/admin/booking-logs');
+
+export const offlineCheckin = (data) =>
+  api.post('/admin/offline-checkin', data);
+
+export const getOfflineBookings = () =>
+  api.get('/admin/offline-bookings');
+
+export const getOfflineRates = () =>
+  api.get('/admin/offline-rates');
+
 export default api;

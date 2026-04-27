@@ -1,6 +1,7 @@
 const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const DB_PATH = path.join(__dirname, '..', 'hotel.db');
 
@@ -77,6 +78,9 @@ function initializeDatabase() {
       check_out TEXT NOT NULL,
       total_price REAL NOT NULL,
       status TEXT NOT NULL DEFAULT 'confirmed' CHECK(status IN ('confirmed', 'cancelled', 'checked_in', 'checked_out')),
+      booking_type TEXT NOT NULL DEFAULT 'online' CHECK(booking_type IN ('online', 'offline')),
+      offline_rate REAL,
+      offline_ref TEXT,
       actual_checkin DATETIME,
       actual_checkout DATETIME,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -96,14 +100,20 @@ function initializeDatabase() {
     );
   `);
 
-  // Seed admin user
-  const adminExists = database.prepare('SELECT id FROM users WHERE email = ?').get('admin@hotel.com');
+  // Seed admin user from env
+  const adminName = process.env.ADMIN_NAME;
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminName || !adminEmail || !adminPassword) {
+    throw new Error('ADMIN_NAME, ADMIN_EMAIL, and ADMIN_PASSWORD must be set in environment variables');
+  }
+  const adminExists = database.prepare('SELECT id FROM users WHERE email = ?').get(adminEmail);
   if (!adminExists) {
-    const hashedPassword = bcrypt.hashSync('admin123', 10);
+    const hashedPassword = bcrypt.hashSync(adminPassword, 10);
     database.prepare(
       'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)'
-    ).run('Admin User', 'admin@hotel.com', hashedPassword, 'admin');
-    console.log('Admin user created: admin@hotel.com / admin123');
+    ).run(adminName, adminEmail, hashedPassword, 'admin');
+    console.log(`Admin user created: ${adminEmail}`);
   }
 
   // Seed rooms
@@ -145,3 +155,4 @@ function initializeDatabase() {
 }
 
 module.exports = { getDb, initializeDatabase };
+//only for my-branch

@@ -47,7 +47,7 @@ export default function AdminSidebar() {
             <Hotel className="w-5 h-5 text-white" />
           </div>
           <div>
-            <div className="text-white font-bold text-sm">Grand Vista</div>
+            <div className="text-white font-bold text-sm">Rama Inn</div>
             <div className="text-gold-400 text-xs tracking-wider uppercase">Admin Panel</div>
           </div>
         </Link>

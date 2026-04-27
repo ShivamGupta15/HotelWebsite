@@ -1,7 +1,7 @@
 {
   "name": "hotel-backend",
   "version": "1.0.0",
-  "description": "Grand Vista Hotel Backend API",
+  "description": "Rama Inn Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
