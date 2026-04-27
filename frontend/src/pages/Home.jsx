@@ -115,11 +115,6 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-gold-500/20 border border-gold-500/30 text-gold-300 text-sm px-4 py-2 rounded-full mb-8">
-            <Star className="w-4 h-4 fill-gold-400 text-gold-400" />
-            <span>5-Star Luxury Hotel & Spa</span>
-          </div>
-
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Luxury Awaits at{' '}
             <span className="text-gold-400 block">Rama Inn</span>

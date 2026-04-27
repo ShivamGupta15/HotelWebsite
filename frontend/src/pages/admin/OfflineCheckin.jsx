@@ -4,7 +4,7 @@ import {
   IndianRupee, Calendar, Users, Phone, User, X
 } from 'lucide-react';
 import AdminSidebar from '../../components/AdminSidebar';
-import api from '../../services/api';
+import { getOfflineRates, getOfflineBookings, offlineCheckin } from '../../services/api';
 
 const categoryColors = {
   standard: 'bg-blue-100 text-blue-800',
@@ -39,8 +39,8 @@ export default function OfflineCheckin() {
   const fetchData = async () => {
     try {
       const [ratesRes, bookingsRes] = await Promise.all([
-        api.get('/admin/offline-rates'),
-        api.get('/admin/offline-bookings'),
+        getOfflineRates(),
+        getOfflineBookings(),
       ]);
       setRooms(ratesRes.data.rooms);
       const rateMap = {};
@@ -98,7 +98,7 @@ export default function OfflineCheckin() {
     setServerError('');
     setSuccess(null);
     try {
-      const res = await api.post('/admin/offline-checkin', {
+      const res = await offlineCheckin({
         ...form,
         room_id: parseInt(form.room_id),
         rate_per_night: parseFloat(form.rate_per_night),

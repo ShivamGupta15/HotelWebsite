@@ -5,9 +5,17 @@
   "Read CLAUDE.md and the last code changes. We are currently [Task Name]."
 - Always update the 'Current State' section of this file before closing a session.
 
+## Current State
+- **Backend/Frontend:** Added "Clear All Logs" functionality to the `BookingLogs` admin page, with a new `DELETE /api/admin/booking-logs` endpoint and UI button.
+- **Database Schema:** Updated `bookings` table with `booking_type`, `offline_rate`, and `offline_ref` columns to support walk-in check-ins.
+- **Backend:** Updated `JWT_SECRET` default to `rama-inn-hotel-secret-key-2026` for brand consistency.
+- **Frontend API Service:** Added missing methods for `getBookingLogs`, `offlineCheckin`, `getOfflineBookings`, `getOfflineRates`, and `clearBookingLogs`.
+- **Admin Pages:** Refactored `OfflineCheckin.jsx` and `BookingLogs.jsx` to use named exports from the API service for better consistency. Added "Clear All Logs" button with confirmation.
+- **Next Steps:** Verify the walk-in check-in flow with the new database columns and test the new clear logs endpoint locally.
+
 ## Project Overview
 Full-stack hotel booking and management application for "Rama Inn". Guest-facing booking site + admin panel for managing rooms, rates, bookings, and walk-in check-ins.
-
+... (rest of file)
 ## Tech Stack
 - **Frontend:** React 18 + Vite, Tailwind CSS, React Router, Axios, Lucide icons
 - **Backend:** Express.js, SQLite (better-sqlite3), JWT auth, Multer (file uploads)

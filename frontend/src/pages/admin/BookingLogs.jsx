@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { ClipboardList, Loader, AlertCircle, LogIn, LogOut, CheckCircle, XCircle, Edit2, Search } from 'lucide-react';
+import { ClipboardList, Loader, AlertCircle, LogIn, LogOut, CheckCircle, XCircle, Edit2, Search, Trash2 } from 'lucide-react';
 import AdminSidebar from '../../components/AdminSidebar';
-import api from '../../services/api';
+import { getBookingLogs, clearBookingLogs } from '../../services/api';
 
 const EVENT_CONFIG = {
   confirmed:      { label: 'Booking Created',  icon: CheckCircle, color: 'bg-blue-100 text-blue-700' },
@@ -25,7 +25,7 @@ export default function BookingLogs() {
     try {
       const params = { limit: 100 };
       if (bookingId) params.booking_id = bookingId;
-      const res = await api.get('/admin/booking-logs', { params });
+      const res = await getBookingLogs(params);
       setLogs(res.data.logs);
       setTotal(res.data.total);
     } catch {
@@ -49,6 +49,22 @@ export default function BookingLogs() {
     fetchLogs('');
   };
 
+  const handleClearAllLogs = async () => {
+    if (!window.confirm('Are you sure you want to clear all booking logs? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      await clearBookingLogs();
+      await fetchLogs(applied); // refresh with current filters
+    } catch (err) {
+      console.error('Clear logs error:', err);
+      setError(`Failed to clear booking logs: ${err.response?.data?.error || err.message}`);
+      setLoading(false);
+    }
+  };
+
   const formatDateTime = (ts) => {
     if (!ts) return '—';
     return new Date(ts).toLocaleString('en-IN', {
@@ -67,9 +83,19 @@ export default function BookingLogs() {
       <AdminSidebar />
 
       <main className="flex-1 overflow-auto">
-        <div className="bg-white border-b border-gray-200 px-8 py-5">
-          <h1 className="text-2xl font-bold text-navy-900">Booking Logs</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Full audit trail of check-ins, check-outs, and booking events</p>
+        <div className="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-navy-900">Booking Logs</h1>
+            <p className="text-sm text-gray-500 mt-0.5">Full audit trail of check-ins, check-outs, and booking events</p>
+          </div>
+          <button
+            onClick={handleClearAllLogs}
+            disabled={loading || logs.length === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-medium hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Trash2 className="w-4 h-4" />
+            Clear All Logs
+          </button>
         </div>
 
         <div className="p-8">

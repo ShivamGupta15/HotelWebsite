@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { getDb } = require('../db/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'grand-vista-hotel-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET || 'rama-inn-hotel-secret-key-2026';
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];

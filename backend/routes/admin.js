@@ -299,6 +299,18 @@ router.get('/booking-logs', (req, res) => {
   res.json({ logs, total: total.count });
 });
 
+// DELETE /api/admin/booking-logs
+router.delete('/booking-logs', (req, res) => {
+  const db = getDb();
+  try {
+    db.prepare('DELETE FROM booking_logs').run();
+    res.json({ success: true, message: 'All booking logs cleared' });
+  } catch (error) {
+    console.error('Error clearing booking logs:', error);
+    res.status(500).json({ error: 'Failed to clear booking logs', details: error.message });
+  }
+});
+
 // POST /api/admin/offline-checkin
 router.post('/offline-checkin', (req, res) => {
   const { guest_name, guest_email, guest_phone, room_id, check_in, check_out, rate_per_night, notes } = req.body;
