@@ -81,20 +81,20 @@ export default function Footer() {
               <li className="flex items-start space-x-2">
                 <MapPin className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-gray-400">
-                  Vijay Nagar<br />
-                  Cantt, Varanasi
+                  Bakers Street<br />
+                  London, UK
                 </span>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-gold-400 flex-shrink-0" />
                 <a href="tel:+18001234567" className="text-sm text-gray-400 hover:text-gold-400 transition-colors">
-                  0542-4019409
+                  +91 800-123-4567
                 </a>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="w-4 h-4 text-gold-400 flex-shrink-0" />
                 <a href="mailto:info@grandvista.com" className="text-sm text-gray-400 hover:text-gold-400 transition-colors">
-                  ramainn2201@gmail.com
+                  xyz@hotel.com
                 </a>
               </li>
             </ul>
